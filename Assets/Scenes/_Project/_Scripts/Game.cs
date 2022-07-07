@@ -1,38 +1,58 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
-    [SerializeField] private CellController cellController;
-    [SerializeField] private Cell cellPrefab;
-    [SerializeField,Range(3,20)] private int _hightGrid;
-    [SerializeField,Range(0.1f,0.6f)] private float _bombProcent;
+    [SerializeField] private Vector2Int _gridSize;
+    [SerializeField] private int _bombCount;
+    [SerializeField] private CellFactory _cellFactory;
+    [SerializeField] private Button _button;
+    [SerializeField] private Image _endGamePanel;
     
+    private MouseInput _mouseInput;
+    private Player _player;
+    private CellController _cellController;
+
     private void Start()
     {
-        ChangeCameraSize();
-        Vector2Int sizeGrid = new Vector2Int((_hightGrid - 1) * 2,_hightGrid);
-        int bombsCount = (int)((sizeGrid.x * sizeGrid.y) * _bombProcent);
-        cellController.Init(this,cellPrefab,sizeGrid,bombsCount);
+        _mouseInput = new MouseInput();
+        _button.onClick.AddListener(Restart);
+        StartGame();
     }
 
-    private void ChangeCameraSize()
+    private void Restart()
     {
-        Camera.main.orthographicSize = (_hightGrid /1.8f);
+        _cellFactory.Clear();
+        StartGame();
     }
-
-    public void Victory()
+    
+    public void StopGame(bool victory)
     {
-        Debug.Log("GG");
+        _mouseInput.Disable();
+
+        ShowPanel(victory);
     }
 
-    public void Failure()
-    { 
-        Debug.Log("F");
+    private void ShowPanel(bool victory)
+    {
+        _endGamePanel.gameObject.SetActive(true);
+        if (victory)
+        {
+            _endGamePanel.color = new Color(0f, 1f, 0f, 0.1f);
+        }
+        else
+        {
+            _endGamePanel.color = new Color(1f, 0f, 0f, 0.1f);
+        }
+    }
+
+    private void StartGame()
+    {
+        _endGamePanel.gameObject.SetActive(false);
+        _mouseInput.Enable();
+        _player = new Player(_mouseInput, Camera.main);
+        _cellController = new CellController(this,_cellFactory, _gridSize, _bombCount,_player);
     }
     
 }

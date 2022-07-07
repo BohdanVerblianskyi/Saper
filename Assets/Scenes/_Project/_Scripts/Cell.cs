@@ -1,92 +1,122 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
-public class Cell : MonoBehaviour, IClick
+public class Cell : MonoBehaviour, IClick, IInitCell
 {
-    public event Action<Cell> onClick;
+    public event Action OnOpenEvent;
 
+    [SerializeField] private CellData data;
     [SerializeField] private SpriteRenderer _spriteRenderer;
-    [SerializeField] private CellSprites _cellSprites;
 
-    private int _maskSpriteCounter = 0;
-    
-    public int NeighborsWithBombCount { get; private set; }
-    public Index Index { get; private set; }
-    public bool IsBomb { get; private set; }
-    public bool IsOpen { get; private set; }
+    private CellState _currentState;
+    private Dictionary<Type, CellState> _states;
+    private bool _isBomb;
 
-    public void Init(Index index)
+    public int NeighborsBombCount { get; private set; }
+    public List<Cell> Neighbors { get; private set; }
+    public CellData Data => data;
+
+    public bool IsMark { get; set; }
+
+    public bool IsOpen { get; set; }
+
+    public void Init(List<IInitCell> neighbors)
     {
-      Index = index;
-      IsOpen = false;
+        NeighborsBombCount = 0;
+        Neighbors = new List<Cell>();
+
+        foreach (IInitCell neighbor in neighbors)
+        {
+            if (neighbor is Cell cell)
+            {
+                Neighbors.Add(cell);
+            }
+        }
+
+        _states = new Dictionary<Type, CellState>
+        {
+            { typeof(CellStateClose), new CellStateClose(this) },
+            { typeof(CellStateOpen), new CellStateOpen(this) }
+        };
+
+        SwitchState<CellStateClose>();
     }
 
-    public void AddBomb() => IsBomb = true;
+    public void AddBomb()
+    {
+        _isBomb = true;
 
-    public void AddOneNeighborsWithBomb() => NeighborsWithBombCount++;
+        _states[typeof(CellStateClose)] = new CellStateBomb(this);
+        SwitchState<CellStateClose>();
+        
+        foreach (Cell neighbor in Neighbors)
+        {
+            if (!neighbor._isBomb)
+            {
+                neighbor.AddNeighborBomb();
+            }
+        }
+    }
 
+    public void SwitchState<TState>() where TState : CellState
+    {
+        if (_states.TryGetValue(typeof(TState), out CellState state))
+        {
+            if (_currentState != null)
+            {
+                _currentState.Exit();
+                _currentState.OnOpenEvent -= OnOpen ;
+            }
+            
+            _currentState = state;
+            _currentState.Enter();
+            _currentState.OnOpenEvent += OnOpen;
+        }
+    }
+
+    private void OnOpen()
+    {
+        OnOpenEvent?.Invoke();
+    }
     
+    public void SetSprite(Sprite sprite) => _spriteRenderer.sprite = sprite;
+
     public void Open()
     {
-        ChengOpenSprite();
-        IsOpen = true;
+        _currentState.Open();
     }
 
-    private void ChangeMarcSprite()
+    private void AddNeighborBomb()
     {
-        _maskSpriteCounter++;
-        if (_maskSpriteCounter >= _cellSprites.Marks.Count)
-        {
-            _maskSpriteCounter = 0;
-        }
-
-        _spriteRenderer.sprite = _cellSprites.Marks[_maskSpriteCounter];
+        NeighborsBombCount++;
     }
 
-    private void ChengOpenSprite()
+    public void Select()
     {
-        Sprite sprite;
-        if (IsBomb)
-        {
-            sprite = _cellSprites.Bomb;
-        }
-        else
-        {
-            sprite = _cellSprites.Empty[NeighborsWithBombCount];
-        }
-
-        _spriteRenderer.sprite = sprite;
+        _currentState.Select();
     }
 
-    public void Click()
+    public void Deselect()
     {
-        if (IsOpen)
-        {
-            return;   
-        }
-        onClick?.Invoke(this);
+        _currentState.Deselect();
     }
 
-    public void AlternativeClick()
+    public void LeftButtonDown()
     {
-        if (IsOpen)
-        {
-         return;   
-        }
-        ChangeMarcSprite();
+        _currentState.LeftButtonDown();
     }
-}
 
-public class Index
-{
-    public int X { get; private set; }
-    public int Y { get;private set; }
-
-    public Index(int x, int y)
+    public void LeftButtonUp()
     {
-        X = x;
-        Y = y;
+        _currentState.LeftButtonUp();
+    }
+
+    public void RightButtonDown()
+    {
+        _currentState.RightButtonDown();
     }
 }

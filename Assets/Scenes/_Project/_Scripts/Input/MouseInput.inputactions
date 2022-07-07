@@ -1,0 +1,86 @@
+{
+    "name": "MouseInput",
+    "maps": [
+        {
+            "name": "Mouse",
+            "id": "fd103323-a554-4a5b-b046-e3a27a2fba29",
+            "actions": [
+                {
+                    "name": "Position",
+                    "type": "Value",
+                    "id": "fce52c19-c9f9-4aa4-8920-69b7a5994b0c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "LeftButton",
+                    "type": "Button",
+                    "id": "3dcb7ce6-ffbb-4ae7-88a5-45abfedc7ec2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RightButton",
+                    "type": "Button",
+                    "id": "cebba141-cc00-4f94-a4f3-9170ce4226ab",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "8bb2543e-3153-4e37-8c4b-84ec63e33a64",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "LeftButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "33a36eec-e767-42fe-92c2-3b5e93b5ab5c",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec22ba0e-3f14-450b-80ac-1b26c2e9cfe8",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse",
+                    "action": "RightButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Mouse",
+            "bindingGroup": "Mouse",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}

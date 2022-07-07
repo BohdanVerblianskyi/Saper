@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c29e07b6706c44e3b65d9f33e4d334c1, type: 3}
-  m_Name: Cell Sprites
+  m_Script: {fileID: 11500000, guid: 1ac0ce6bb23a4731bf40d2cb28971fe7, type: 3}
+  m_Name: Cell Data
   m_EditorClassIdentifier: 
-  _bomb: {fileID: 7793715843362058623, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
-  _empty:
+  close: {fileID: 6269003776326835493, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
+  open:
   - {fileID: 5107053084079888699, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
   - {fileID: -97253640319851228, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
   - {fileID: -8329667154674619861, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
@@ -23,9 +23,6 @@ MonoBehaviour:
   - {fileID: -4458662450587017239, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
   - {fileID: 6837254327443753756, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
   - {fileID: 993283986076727709, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
-  - {fileID: 6269003776326835493, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
-  _marks:
-  - {fileID: 6269003776326835493, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
-  - {fileID: -4561784768960442474, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
-  - {fileID: 5445705979977107594, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
-  - {fileID: -8560814224846811130, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
+  bomb: {fileID: 7793715843362058623, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
+  mark: {fileID: -4561784768960442474, guid: 56c8571542960404e8dddb6c0598218a, type: 3}
+  press: {fileID: 21300000, guid: 156ed75c7ff5fdf45bb6cddb1e85d1bf, type: 3}

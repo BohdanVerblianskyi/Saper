@@ -1,6 +1,8 @@
 public interface IClick
 {
-    void Click();
-    void AlternativeClick();
-    
+    void Select();
+    void Deselect();
+    void LeftButtonDown();
+    void LeftButtonUp();
+    void RightButtonDown();
 }
